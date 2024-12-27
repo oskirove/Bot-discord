@@ -7,6 +7,13 @@ const port = process.env.PORT || 3000;
 const http = require('http')
 require('dotenv').config();
 
+app.use((req, res, next) => {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect('https://' + req.headers.host + req.url);
+    }
+    next();
+});
+
 app.get('/', (req, res) => {
   res.send('Bot activo!');
 });
