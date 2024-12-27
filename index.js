@@ -1,7 +1,19 @@
 const { Client, GatewayIntentBits, REST, Routes, Collection } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
+const express = require('express');
+const app = express();
+const port = 3000;
 require('dotenv').config();
+
+app.get('/', (req, res) => {
+  res.send('Bot activo!');
+});
+
+app.listen(port, () => {
+  console.log(`App escuchando en http://localhost:${port}`);
+});
+
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
@@ -57,5 +69,9 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: 'Hubo un error al ejecutar este comando.', ephemeral: true });
     }
 });
+
+setInterval(() => {
+  http.get(`http://localhost:${port}`);
+}, 280000);
 
 client.login(process.env.DISCORD_TOKEN);
